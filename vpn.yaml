@@ -1,0 +1,84 @@
+mode: rule
+
+dns:
+  enable: true
+  ipv6: false
+  enhanced-mode: fake-ip
+  nameserver:
+    - 1.1.1.1
+    - 8.8.8.8
+
+proxies:
+  - name: "Your-Server-Name"
+    type: vless
+    server: <ВАШ_IP_СЕРВЕРА>
+    port: 443
+    uuid: <ВАШ_UUID>
+    network: tcp
+    udp: true
+    tls: true
+    client-fingerprint: chrome
+    flow: xtls-rprx-vision
+    servername: www.samsung.com
+    reality-opts:
+      public-key: <ВАШ_PUBLIC_KEY>
+      short-id: <ВАШ_SHORT_ID>
+
+proxy-groups:
+  - name: "Proxy"
+    type: select
+    proxies:
+      - "Your-Server-Name"
+
+rule-providers:
+  habr-domains:
+    type: http
+    behavior: domain
+    format: text
+    url: "https://community.antifilter.download/list/domains.lst"
+    path: ./ruleset/habr-domains.txt
+    interval: 43200
+
+rules:
+  # 0. БЛОКИРУЕМ QUIC (Для стабильности Google/YouTube)
+  - AND,((NETWORK,UDP),(DST-PORT,443)),REJECT
+
+  # 1. ДИСКОРД (Голос и чаты)
+  - PROCESS-NAME,Discord.exe,Proxy
+  - DOMAIN-KEYWORD,discord,Proxy
+  - DOMAIN-SUFFIX,discordapp.com,Proxy
+  - DOMAIN-SUFFIX,discordapp.net,Proxy
+
+  # 2. ТЕЛЕГРАМ
+  - GEOIP,telegram,Proxy
+
+  # 3. СТИМ: ОБЛАКО И СООБЩЕСТВО
+  - DOMAIN-SUFFIX,steamcommunity.com,Proxy
+  - DOMAIN-SUFFIX,steampowered.com,Proxy
+  - DOMAIN-SUFFIX,steamusercontent.com,Proxy
+  - DOMAIN-SUFFIX,steamcloud.io,Proxy
+  - DOMAIN-KEYWORD,steamcloud,Proxy
+  - DOMAIN-KEYWORD,steambroadcast,Proxy
+  - DOMAIN-SUFFIX,amazonaws.com,Proxy
+
+  - DOMAIN-SUFFIX,epicgames.com,DIRECT
+  - DOMAIN-SUFFIX,epicgames.dev,DIRECT
+  - DOMAIN-SUFFIX,xboxlive.com,DIRECT
+  - DOMAIN-SUFFIX,steamcontent.com,DIRECT
+  - DOMAIN-SUFFIX,steamstatic.com,DIRECT
+  - DOMAIN-KEYWORD,steamserver,DIRECT
+
+  # 5. СОЦСЕТИ И МЕДИА
+  - DOMAIN-SUFFIX,twitter.com,Proxy
+  - DOMAIN-SUFFIX,instagram.com,Proxy
+  - DOMAIN-SUFFIX,youtube.com,Proxy
+  - DOMAIN-SUFFIX,googlevideo.com,Proxy
+  - DOMAIN-SUFFIX,ytimg.com,Proxy
+  - DOMAIN-SUFFIX,ggpht.com,Proxy
+  - DOMAIN-SUFFIX,t.me,Proxy
+
+  # 6. (Antifilter)
+  - RULE-SET,habr-domains,Proxy
+
+  # 7. ВСЁ ОСТАЛЬНОЕ
+  - MATCH,DIRECT
