@@ -76,6 +76,7 @@ rules:
   - DOMAIN-SUFFIX,ytimg.com,Proxy
   - DOMAIN-SUFFIX,ggpht.com,Proxy
   - DOMAIN-SUFFIX,t.me,Proxy
+  - DOMAIN-SUFFIX,trycloudflare.com,Proxy
 
   # 6. (Antifilter)
   - RULE-SET,habr-domains,Proxy
