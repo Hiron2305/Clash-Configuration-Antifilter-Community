@@ -40,19 +40,15 @@ rule-providers:
     interval: 43200
 
 rules:
-  # 0. БЛОКИРУЕМ QUIC (Для стабильности Google/YouTube)
   - AND,((NETWORK,UDP),(DST-PORT,443)),REJECT
 
-  # 1. ДИСКОРД (Голос и чаты)
   - PROCESS-NAME,Discord.exe,Proxy
   - DOMAIN-KEYWORD,discord,Proxy
   - DOMAIN-SUFFIX,discordapp.com,Proxy
   - DOMAIN-SUFFIX,discordapp.net,Proxy
 
-  # 2. ТЕЛЕГРАМ
   - GEOIP,telegram,Proxy
 
-  # 3. СТИМ: ОБЛАКО И СООБЩЕСТВО
   - DOMAIN-SUFFIX,steamcommunity.com,Proxy
   - DOMAIN-SUFFIX,steampowered.com,Proxy
   - DOMAIN-SUFFIX,steamusercontent.com,Proxy
@@ -68,18 +64,33 @@ rules:
   - DOMAIN-SUFFIX,steamstatic.com,DIRECT
   - DOMAIN-KEYWORD,steamserver,DIRECT
 
-  # 5. СОЦСЕТИ И МЕДИА
+
   - DOMAIN-SUFFIX,twitter.com,Proxy
   - DOMAIN-SUFFIX,instagram.com,Proxy
   - DOMAIN-SUFFIX,youtube.com,Proxy
   - DOMAIN-SUFFIX,googlevideo.com,Proxy
+  - DOMAIN-SUFFIX,youtu.be,Proxy
   - DOMAIN-SUFFIX,ytimg.com,Proxy
   - DOMAIN-SUFFIX,ggpht.com,Proxy
   - DOMAIN-SUFFIX,t.me,Proxy
   - DOMAIN-SUFFIX,trycloudflare.com,Proxy
 
-  # 6. (Antifilter)
+  - DOMAIN-SUFFIX,labs.google,Proxy
+  - DOMAIN-KEYWORD,labs.google,Proxy
+  - DOMAIN-SUFFIX,aistudio.google.com,Proxy
+  - DOMAIN-SUFFIX,gemini.google.com,Proxy
+  - DOMAIN-SUFFIX,generativeai.google,Proxy
+  - DOMAIN-KEYWORD,generativeai,Proxy
+  - DOMAIN-SUFFIX,aitestkitchen.withgoogle.com,Proxy
+  - DOMAIN-KEYWORD,aitestkitchen,Proxy
+  - DOMAIN-SUFFIX,ai.google,Proxy
+  - DOMAIN-SUFFIX,generativelanguage.googleapis.com,Proxy
+  - DOMAIN-SUFFIX,googleusercontent.com,Proxy
+  - DOMAIN-SUFFIX,google.com,Proxy
+  - DOMAIN-SUFFIX,googleapis.com,Proxy
+  - DOMAIN-SUFFIX,gstatic.com,Proxy
+  - DOMAIN-KEYWORD,google,Proxy
+
   - RULE-SET,habr-domains,Proxy
 
-  # 7. ВСЁ ОСТАЛЬНОЕ
   - MATCH,DIRECT
