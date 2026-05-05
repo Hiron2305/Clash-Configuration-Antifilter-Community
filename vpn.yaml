@@ -86,10 +86,12 @@ rules:
   - DOMAIN-SUFFIX,ai.google,Proxy
   - DOMAIN-SUFFIX,generativelanguage.googleapis.com,Proxy
   - DOMAIN-SUFFIX,googleusercontent.com,Proxy
-  - DOMAIN-SUFFIX,google.com,Proxy
   - DOMAIN-SUFFIX,googleapis.com,Proxy
   - DOMAIN-SUFFIX,gstatic.com,Proxy
-  - DOMAIN-KEYWORD,google,Proxy
+  - DOMAIN-SUFFIX,notebooklm.google.com,Proxy
+  - DOMAIN-KEYWORD,notebooklm,Proxy
+
+  - PROCESS-NAME,CapCut.exe,Proxy
 
   - RULE-SET,habr-domains,Proxy
 
